@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from scipy.stats import ttest_ind
 from tqdm import tqdm
 from pyfaidx import Fasta
 from Bio import SeqIO
@@ -54,7 +56,7 @@ ccds_sequences = SeqIO.parse(open('CCDS_nucleotide.current.fna'),'fasta')  # loa
 uni_sequences = Fasta('uniprot_sprot.fasta', key_function=extract_id)  # load uniprot sequences
 
 total, wrong = 0, 0
-list_of_mismatch, list_of_mismatch_seqs = [], []
+list_of_mismatch, list_of_mismatch_seqs, match_dist, wrong_dist = [], [], [], []
 for fasta in tqdm(ccds_sequences):
     try:
         name, dna_seq = fasta.id, str(fasta.seq)  # get id and sequence
@@ -65,7 +67,11 @@ for fasta in tqdm(ccds_sequences):
             wrong += 1
             list_of_mismatch.append([ccds_id, uniprot_id])
             list_of_mismatch_seqs.append([translate(dna_seq), prot_seq])
+            wrong_dist.append(len(mismatch(translate(dna_seq), prot_seq)))
+        else:
+            wrong_dist.append(0)
         total += 1
+        match_dist.append(0)
     except:
         continue
 
@@ -83,9 +89,7 @@ for i in range(len(list_of_mismatch_seqs)):
 
 
 
-
-
-
-
-
-
+a = np.array(match_dist)
+b = np.array(wrong_dist)
+print(len(a), len(b))
+print(ttest_ind(a, b))
