@@ -1,11 +1,7 @@
-import re
 import pandas as pd
-import scipy
 from tqdm import tqdm
 from pyfaidx import Fasta
 from Bio import SeqIO
-import warnings
-warnings.filterwarnings('ignore')
 
 
 def extract_id(header):  # for getting uniprot sequences
