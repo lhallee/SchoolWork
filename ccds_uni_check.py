@@ -6,8 +6,7 @@ from pyfaidx import Fasta
 from Bio import SeqIO
 
 
-def extract_id(header):  # for getting uniprot sequences
-    return header.split('|')[1]
+
 
 
 def translate(dna_seq):  # This function translates dna sequences to amino acids, where - is a stop
